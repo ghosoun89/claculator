@@ -13,7 +13,7 @@ stages:
 
 jobs:
   include:
-    - stage: ghosoun_build
+    - stage: ghosoun_test
       name: e2e_tests
       uses: actions/checkout@v2
       run: echo "$GITHUB_SHA"
