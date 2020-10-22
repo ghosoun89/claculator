@@ -15,13 +15,15 @@ jobs:
   include:
     - stage: ghosoun_test
       name: e2e_tests
-      uses: actions/checkout@v2
+      uses:
+        - actions/checkout@v2
+        - actions/setup-node@v1
       run: echo "$GITHUB_SHA"
-      uses: actions/setup-node@v1
       with:
         node-version: '14.x'
-        run: npm ci
-        run: npm run cypress:ci
+        run:
+          - npm ci
+          - npm run cypress:ci
 
      - stage: batch-completion-notification
         name: Update Applitools batch status
