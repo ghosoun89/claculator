@@ -1,31 +1,21 @@
-
-language: node_js
-
-node_js:
-- node
-- 'lts/*'
-branches:
-  only:
-    - master
+on:
+  push:
+    branches:
       - '**'
         
 env:
-  global:
-    APPLITOOLS_API_KEY: ${APPLITOOLS_API_KEY}
-    APPLITOOLS_BATCH_ID: ${github.sha}
+    APPLITOOLS_API_KEY: ${{ secrets.APPLITOOLS_API_KEY }}
+    APPLITOOLS_BATCH_ID: ${{ github.sha }}
 
 jobs:
   run-tests:
     runs-on: ubuntu-latest
-    include:
-     - stage: Ghosoun
-       name: Checkout
+    steps:
+      - name: Checkout
         uses: actions/checkout@v2
-     - stage: Ghosoun
-       name: Log Git SHA
+      - name: Log Git SHA
         run: echo "$GITHUB_SHA"
-     - stage: Ghosoun
-       name: Use Node.js
+      - name: Use Node.js
         uses: actions/setup-node@v1
         with:
           node-version: '14.x'
@@ -37,8 +27,8 @@ jobs:
     needs: run-tests
     if: always()
     runs-on: ubuntu-latest
-     - stage: Ghosoun 2
-       name: Update Applitools batch status 
+    steps:
+      - name: Update Applitools batch status 
         uses: wei/curl@v1.1.1
         with:
           args: -d "" -X POST https://eyesapi.applitools.com/api/externals/github/servers/github.com/commit/${{ env.APPLITOOLS_BATCH_ID }}/complete?apiKey=${{ secrets.APPLITOOLS_API_KEY }}
