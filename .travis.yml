@@ -8,29 +8,19 @@ on:
       - '**'
 
 stages:
-  - name: ghosoun_build
-  - name: e2e_tests
+  - name: ghosoun_test
 
 jobs:
   include:
     - stage: ghosoun_build
-      name: Checkout
+      name: e2e_tests
       uses: actions/checkout@v2
-
-    - stage: "ghosouon_build"
-      name: Log Git SHA
       run: echo "$GITHUB_SHA"
-
-    - stage: "ghosoun_build"
-      name: Use Node.js
       uses: actions/setup-node@v1
       with:
         node-version: '14.x'
         run: npm ci
-
-    - stage: e2e_tests
-      name: Run Tests
-      run: npm run cypress:ci
+        run: npm run cypress:ci
 
   batch-completion-notification:
     needs: run-tests
