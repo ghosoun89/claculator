@@ -1,0 +1,29 @@
+language: node_js
+
+node_js:
+  - 'lts/*'
+on:
+  push:
+    branches:
+      - '**'
+
+stages:
+  - name: ghosoun_test
+  - name: batch-completion-notification
+
+jobs:
+  include:
+    - stage: ghosoun_test
+      name: e2e_tests
+      uses:
+        - actions/checkout@v2
+        - actions/setup-node@v1
+      run: echo "$GITHUB_SHA"
+      with:
+        node-version: '14.x'
+        run:
+          - npm ci
+          - npm run cypress:ci
+        uses: wei/curl@v1.1.1
+        with:
+          args: -d "" -X POST https://eyesapi.applitools.com/api/externals/github/servers/github.com/commit/$GITHUB_SHA/complete?apiKey=$APPLITOOLS_API_KEY
