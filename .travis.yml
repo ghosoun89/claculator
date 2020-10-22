@@ -24,9 +24,6 @@ jobs:
         run:
           - npm ci
           - npm run cypress:ci
-
-     - stage: batch-completion-notification
-        name: Update Applitools batch status
         uses: wei/curl@v1.1.1
         with:
           args: -d "" -X POST https://eyesapi.applitools.com/api/externals/github/servers/github.com/commit/$GITHUB_SHA/complete?apiKey=$APPLITOOLS_API_KEY
