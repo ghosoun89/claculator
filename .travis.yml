@@ -9,6 +9,7 @@ on:
 
 stages:
   - name: ghosoun_test
+  - name: batch-completion-notification
 
 jobs:
   include:
@@ -22,12 +23,8 @@ jobs:
         run: npm ci
         run: npm run cypress:ci
 
-  batch-completion-notification:
-    needs: run-tests
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Update Applitools batch status
+     - stage: batch-completion-notification
+        name: Update Applitools batch status
         uses: wei/curl@v1.1.1
         with:
           args: -d "" -X POST https://eyesapi.applitools.com/api/externals/github/servers/github.com/commit/$GITHUB_SHA/complete?apiKey=$APPLITOOLS_API_KEY
