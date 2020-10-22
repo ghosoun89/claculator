@@ -8,10 +8,6 @@ on:
     branches:
       - '**'
 
-env:
-    APPLITOOLS_API_KEY: APPLITOOLS_API_KEY
-    APPLITOOLS_BATCH_ID: $GITHUB_SHA
-
 jobs:
   run-tests:
     runs-on: ubuntu-latest
@@ -36,4 +32,4 @@ jobs:
       - name: Update Applitools batch status 
         uses: wei/curl@v1.1.1
         with:
-          args: -d "" -X POST https://eyesapi.applitools.com/api/externals/github/servers/github.com/commit/${{ env.APPLITOOLS_BATCH_ID }}/complete?apiKey=$APPLITOOLS_API_KEY
+          args: -d "" -X POST https://eyesapi.applitools.com/api/externals/github/servers/github.com/commit/$GITHUB_SHA/complete?apiKey=$APPLITOOLS_API_KEY
